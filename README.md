@@ -146,5 +146,4 @@ Also, command line output will highlight errors in the input in case they are pr
 Many additional behaviors are actually available and possible. Please check the documentation for System.CommandLine library: https://github.com/dotnet/command-line-api
 
 # Contribute
-This application results from an MCS project; it is actually a generalist version of the original software.
-The application is NOT under active development, but don't hesitate to contact an administrator for any support request or potential evolution.
+This application is NOT under active development, but don't hesitate to contact me for any support request or potential evolution.
