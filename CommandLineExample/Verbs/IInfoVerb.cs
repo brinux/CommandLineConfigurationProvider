@@ -1,4 +1,4 @@
-﻿namespace Verbs
+﻿namespace brinux.CommandLineConfigurationProvider.examples
 {
 	public interface IInfoVerb
 	{

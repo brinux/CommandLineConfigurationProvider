@@ -1,9 +1,7 @@
-﻿using CommandLineExample;
-using brinux.CommandLineConfigurationProvider;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Verbs
+namespace brinux.CommandLineConfigurationProvider.examples
 {
 	[CommandLineParserVerb("info", "Gets some information", Aliases = new string[] { "-i" })]
 	public class InfoVerb : IInfoVerb

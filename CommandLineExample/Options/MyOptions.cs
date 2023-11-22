@@ -1,8 +1,6 @@
-﻿using brinux.CommandLineConfigurationProvider;
-using System.ComponentModel.DataAnnotations;
-using Verbs;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace CommandLineExample
+namespace brinux.CommandLineConfigurationProvider.examples
 {
 	[CommandLineParserOptions]
 	public class MyOptions

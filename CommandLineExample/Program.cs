@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using brinux.CommandLineConfigurationProvider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.CommandLine;
-using Verbs;
 
-namespace CommandLineExample
+namespace brinux.CommandLineConfigurationProvider.examples
 {
 	class Program
 	{

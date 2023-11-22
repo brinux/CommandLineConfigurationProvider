@@ -1,5 +1,5 @@
 # Introduction 
-The one implemented by this application is a potential approach to parsing command line parameters in a modern .Net applications with built-it Host leveraging C# attributes and a ConfigurationProvider based on System.CommanLine library.
+The one implemented by this application is a potential approach to parse command line parameters in a modern .Net applications with built-it Host leveraging C# attributes and a ConfigurationProvider based on System.CommanLine library.
 
 # Getting Started
 The project creates a custom ConfigurationProvider to be used with the Host ConfigurationBuilder. It parses the command line looking for parameters (options) and commands (verbs), imports them into application Configuration, and takes charge of the output in case it is required. C# Attributes allow developers to conveniently configure parsing behavior without "really" writing code.
@@ -28,7 +28,7 @@ The applied attribute allows additional params:
 * Alias: to set option aliases. At now, each option is expected to be provided as: --[OPTION_NAME] value
 * Verb: registers the option as related to a specific verb only. Plase notice that, as it will be clarified below, each verb is associated to a specific class with a handler method and that's why the reference is implemented using the type of such class.
 
-Standard annotatation can be applied to option properties as well, and in particular [Range] will be leveraged to force the accepted input value range.
+Standard attributes can be applied to option properties as well, and in particular [Range] will be leveraged to force the accepted input value range.
 Please also notice that applying [Required] attribute to a property will mark it as required for the overall configuration, and not for the command line input. To mark as mandatory for the command line set the CommandLineParserOption attribute 'Required' property to true.
 
 To read the parameters from the command line set the ConfigurationProvider in the ConfigurationBuilder.
@@ -55,7 +55,7 @@ If required, additional control on the root command can be achieved by the follo
 ```
 Command line commands (verbs) are threated defining a class for each one of them and by setting one of its methods as the "verb-handler".
 ```
-// Indicated that the class handled a specific verb whose parameters are provided in the annotation.
+// Indicated that the class handled a specific verb whose parameters are provided in the attribute.
 [CommandLineParserVerb("run", "Runs the application.", Aliases = new string[] { "-r" })]
 public class RunVerb : IRunVerb
 {
