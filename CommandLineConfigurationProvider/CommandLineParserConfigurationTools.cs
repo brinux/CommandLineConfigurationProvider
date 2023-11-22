@@ -8,47 +8,47 @@ namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 	public static class CommandLineParserConfigurationTools
 	{
 		private static List<PropertyInfo> _registeredOptions;
-		private static List<MethodInfo> _registeredVerbs;
+		private static List<Type> _registeredVerbs;
 
 		public static List<PropertyInfo> FindCommandLineGlobalOptions()
 		{
 			return FindRegisteredOptions().Where(o =>
-				string.IsNullOrEmpty(o.GetCustomAttribute<CommandLineParserOptionAttribute>().Verb)
+				o.GetCustomAttribute<CommandLineParserOptionAttribute>().Verb == null
 			).ToList();
 		}
 
-		public static List<PropertyInfo> FindCommandLineVerbOptions(string verbName)
+		public static List<PropertyInfo> FindCommandLineVerbOptions(Type verbType)
 		{
 			return FindRegisteredOptions().Where(o =>
 			{
 				var verbOptionAttribute = o.GetCustomAttribute<CommandLineParserOptionAttribute>().Verb;
 
-				return !string.IsNullOrEmpty(verbOptionAttribute) && (verbOptionAttribute == verbName);
+				return verbOptionAttribute != null && verbOptionAttribute == verbType;
 			}
 			).ToList();
 		}
 
-		public static MethodInfo GetCommandLineVerbReferencesByName(string verbName)
+		public static Type GetCommandLineVerbReferencesByName(string verbName)
 		{
-			return FindRegisteredVerbs().Single(m => m.GetCustomAttribute<CommandLineParserVerbAttribute>().Verb.Equals(verbName));
+			return FindRegisteredVerbs().Single(t => t.GetCustomAttribute<CommandLineParserVerbAttribute>().Name.Equals(verbName));
 		}
 
-		public static List<MethodInfo> FindRegisteredVerbs()
+		public static MethodInfo GetCommandLineVerbHandler(Type verb)
+		{
+			return FindRegisteredVerbs()
+				.Single(v => v == verb)
+				.GetMethods()
+				.Single(m => m.GetCustomAttribute<CommandLineParserVerbHandlerAttribute>() != null);
+		}
+
+		public static List<Type> FindRegisteredVerbs()
 		{
 			if (_registeredVerbs == null)
 			{
-				var methods = new List<MethodInfo>();
-
-				var optionClasses = AppDomain.CurrentDomain.GetAssemblies()
+				_registeredVerbs = AppDomain.CurrentDomain.GetAssemblies()
 					.SelectMany(s => s.GetTypes())
-					.Where(t => t.IsDefined(typeof(CommandLineParserVerbsAttribute)));
-
-				foreach (var optionClass in optionClasses)
-				{
-					methods.AddRange(optionClass.GetMethods().Where(m => Attribute.IsDefined(m, typeof(CommandLineParserVerbAttribute))));
-				}
-
-				_registeredVerbs = methods;
+					.Where(t => t.IsDefined(typeof(CommandLineParserVerbAttribute)))
+					.ToList();
 			}
 
 			return _registeredVerbs;

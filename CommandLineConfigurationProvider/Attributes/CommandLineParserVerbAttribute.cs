@@ -2,16 +2,16 @@
 
 namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 {
-	[AttributeUsage(AttributeTargets.Method)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class CommandLineParserVerbAttribute : Attribute
 	{
-		public string Verb;
+		public string Name;
+		public string[] Aliases;
 		public string Description;
-		public string[] Alias;
 
 		public CommandLineParserVerbAttribute(string verb, string description)
 		{
-			Verb = verb;
+			Name = verb;
 			Description = description;
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration.CommandLineConfigurationProvider;
 using System.ComponentModel.DataAnnotations;
+using Verbs;
 
 namespace CommandLineExample
 {
@@ -19,7 +20,7 @@ namespace CommandLineExample
 		[CommandLineParserOption("Provides a value with set boundaries (min: 1, max: 10).")]
 		public int ValueInRange { get; set; }
 
-		[CommandLineParserOption("Option for 'test' verb.", Required = true, Verb = "test")]
+		[CommandLineParserOption("Option for 'test' verb.", Required = true, Verb = typeof(TestVerb))]
 		public string VerbOption { get; set; }
 	}
 }

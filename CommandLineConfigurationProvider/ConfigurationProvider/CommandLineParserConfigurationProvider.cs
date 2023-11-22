@@ -43,9 +43,9 @@ namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 			{
 				var attribute = verb.GetCustomAttribute(typeof(CommandLineParserVerbAttribute)) as CommandLineParserVerbAttribute;
 
-				var currentVerb = new Command(attribute.Verb, attribute.Description);
+				var currentVerb = new Command(attribute.Name, attribute.Description);
 
-				var registeredVerbOptions = CommandLineParserConfigurationTools.FindCommandLineVerbOptions(currentVerb.Name);
+				var registeredVerbOptions = CommandLineParserConfigurationTools.FindCommandLineVerbOptions(verb);
 
 				var commandLineVerbOptions = ConvertRegisteredOptions(registeredVerbOptions);
 
@@ -56,9 +56,9 @@ namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 
 				commandLineOptions.AddRange(commandLineVerbOptions);
 
-				if (attribute.Alias != null && attribute.Alias.Count() > 0)
+				if (attribute.Aliases != null && attribute.Aliases.Count() > 0)
 				{
-					foreach (var alias in attribute.Alias)
+					foreach (var alias in attribute.Aliases)
 					{
 						currentVerb.AddAlias(alias);
 					}

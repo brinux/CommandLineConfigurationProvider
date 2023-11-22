@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.CommandLine;
+using Verbs;
 
 namespace CommandLineExample
 {
@@ -40,7 +41,9 @@ namespace CommandLineExample
 				{
 					services.AddOptions<MyOptions>().Bind(context.Configuration).ValidateDataAnnotations();
 
-					services.AddScoped<IExecutor, Executor>();
+					services.AddScoped<IInfoVerb, InfoVerb>();
+					services.AddScoped<IRunVerb, RunVerb>();
+					services.AddScoped<ITestVerb, TestVerb>();
 
 					services.AddCommandLineVerbsHandler();
 				})

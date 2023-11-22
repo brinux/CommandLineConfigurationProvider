@@ -17,8 +17,8 @@ public class MyOptions
 	[CommandLineParserOption("Enables a specific feature.")] 
 	public bool EnableSomething { get; set; }
 
-	// Marks the property as an "option" but only for the "test" verb, for which it is also set as mandatory
-	[CommandLineParserOption("Option for 'test' verb.", Required = true, Verb = "test")]
+	// Marks the property as an "option" but only for a specific verb-handler, for which it is also set as mandatory
+	[CommandLineParserOption("Option for 'test' verb.", Required = true, Verb = typeof(MyVerbHandler)]
 	public string VerbOption { get; set; }
 	...
 }
@@ -26,7 +26,7 @@ public class MyOptions
 The applied attribute allows additional params:
 * Required:  sets the command line parameter mandatory
 * Alias: to set option aliases. At now, each option is expected to be provided as: --[OPTION_NAME] value
-* Verb: registers the option as related to a specific verb only
+* Verb: registers the option as related to a specific verb only. Plase notice that, as it will be clarified below, each verb is associated to a specific class with a handler method and that's why the reference is implemented using the type of such class.
 
 Standard annotatation can be applied to option properties as well, and in particular [Range] will be leveraged to force the accepted input value range.
 Please also notice that applying [Required] attribute to a property will mark it as required for the overall configuration, and not for the command line input. To mark as mandatory for the command line set the CommandLineParserOption attribute 'Required' property to true.
@@ -53,14 +53,14 @@ If required, additional control on the root command can be achieved by the follo
 	rootCommand.TreatUnmatchedTokensAsErrors = true;
 })
 ```
-Command line commands (verbs) are threated in a similar way, but with different attributes.
+Command line commands (verbs) are threated defining a class for each one of them and by setting one of its methods as the "verb-handler".
 ```
-// Indicated the class may contain "verbs"
-[CommandLineParserVerbs] 
-public class Executor : IExecutor
+// Indicated that the class handled a specific verb whose parameters are provided in the annotation.
+[CommandLineParserVerb("run", "Runs the application.", Aliases = new string[] { "-r" })]
+public class RunVerb : IRunVerb
 {
-	// Associates the method via a verb named "run" and provides it a description
-	[CommandLineParserVerb("run", "Runs the application.")] 
+	// Sets the method as the executor of the verb
+	[CommandLineParserVerbHandler] 
 	public async Task Run()
 	{ ... }
 }
@@ -68,7 +68,9 @@ public class Executor : IExecutor
 The applied attribute allows additional params:
 * Alias: to set verb aliases.
 
-To enable the handling of verbs, it is required to configure the HostBuilder adding a specific service:
+Please notice that the class implements an interface; this is mandatory since it is served via Dependency Injection. Thanks to this, all the required dependencies can be injected into the class, including the configuration parameters.
+
+To enable the handling of options and verbs, it is required to configure the HostBuilder adding a specific service:
 ```
 await new HostBuilder()
 	.ConfigureAppConfiguration((hostingContext, configuration) =>
@@ -80,17 +82,16 @@ await new HostBuilder()
 	})
 	.ConfigureServices((context, services) =>
 	{
-		// Since the class containing the method will be instantiated via Dependency Injected, it is required to register it
-		services.AddScoped<IExecutor, Executor>();
+		// As stated above, ver-handlers must be registered with D.I.
+		services.AddScoped<IRunVerb, RunVerb>();
 
-		// This handles the presence of a verb in the provided command line input
+		// This handles the presence of a verb in the provided command line input and automatically starts the correct handler
 		services.AddCommandLineVerbsHandler(); 
 	})
 	.Build()
 	.RunAsync();
 ```
 If a verb is provided in the command line input, the associated method is run.
-Please notice that the calls containing the method gets created via Dependency Injection, and this is why in the example Executor is registered as IExecutor.
 
 The overall suggested approach is to also leverage IOptions<> to define configuration entities served by Dependency Injection, that are also convenient entities to mark the input properties/option with the required attribute.
 
@@ -114,7 +115,7 @@ await new HostBuilder()
 		// Multiple options can be declared, and validated using standard attributes
 		services.AddOptions<MyOptions>().Bind(context.Configuration).ValidateDataAnnotations();
 
-		services.AddScoped<IExecutor, Executor>();
+		services.AddScoped<IRunVerb, RunVerb>();
 
 		// The verb handler intercepts the provided verb and run the associated method
 		services.AddCommandLineVerbsHandler();

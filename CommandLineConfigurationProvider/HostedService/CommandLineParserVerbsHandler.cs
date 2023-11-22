@@ -28,30 +28,32 @@ namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 		{
 			if (string.IsNullOrEmpty(_config.GetSection(CommandLineParserConfigurationProvider.APPLICATION_HELP_REQUEST).Value))
 			{
-				var verb = _config.GetSection(CommandLineParserConfigurationProvider.APPLICATION_MAIN_COMMAND_NAME).Value;
+				var verbName = _config.GetSection(CommandLineParserConfigurationProvider.APPLICATION_MAIN_COMMAND_NAME).Value;
 
-				var methodInfo = CommandLineParserConfigurationTools.GetCommandLineVerbReferencesByName(verb);
+				var verbHandler = CommandLineParserConfigurationTools.GetCommandLineVerbReferencesByName(verbName);
 
-				var interfaces = methodInfo.DeclaringType.GetInterfaces();
+				var interfaces = verbHandler.GetInterfaces();
 
-				if (interfaces.Length == 0)
+				if (interfaces == null || interfaces.Length != 1)
 				{
 					throw new ApplicationException("CommandLineParser expect the verb handling class to be injected via DI, and thus it must implement an interface.");
 				}
 
-				var methodClassInstance = _serviceProvider.GetRequiredService(interfaces[0]);
+				var verbHandlerInstance = _serviceProvider.GetRequiredService(interfaces[0]);
 
-				if ((AsyncStateMachineAttribute)methodInfo.GetCustomAttribute(typeof(AsyncStateMachineAttribute)) != null)
+				var verbHandlerMethod = CommandLineParserConfigurationTools.GetCommandLineVerbHandler(verbHandler);
+
+				if ((AsyncStateMachineAttribute)verbHandlerMethod.GetCustomAttribute(typeof(AsyncStateMachineAttribute)) != null)
 				{
 					// Async method
-					var execution = (Task)methodInfo.Invoke(methodClassInstance, new object[] { });
+					var execution = (Task)verbHandlerMethod.Invoke(verbHandlerInstance, new object[] { });
 
 					await execution.ConfigureAwait(false);
 				}
 				else
 				{
 					// Sync method
-					methodInfo.Invoke(methodClassInstance, new object[] { });
+					verbHandlerMethod.Invoke(verbHandlerInstance, new object[] { });
 				}
 			}
 

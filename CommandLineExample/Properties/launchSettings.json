@@ -7,13 +7,13 @@
         //"commandLineArgs": "run --EnableSomething false --InputParameter myValue --ValueInRange 1"
 
         // Command: test, with verb-related option
-        //"commandLineArgs": "test --EnableSomething false --InputParameter myValue --ValueInRange 1 --VerbOption myVerbIsTest"
+        "commandLineArgs": "test --EnableSomething false --InputParameter myValue --ValueInRange 1 --VerbOption myVerbIsTest"
 
         // Command: test, without required verb-related option --> error!
         //"commandLineArgs": "test --EnableSomething false --InputParameter myValue --ValueInRange 1"
 
         // Help output
-        "commandLineArgs": "-?"
+        //"commandLineArgs": "-?"
     }
   }
 }

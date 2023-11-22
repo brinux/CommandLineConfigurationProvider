@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
 		public string Description;
 		public bool Required = false;
 		public string[] Alias;
-		public string Verb;
+		public Type Verb;
 
 		public CommandLineParserOptionAttribute(string description)
 		{
