@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.CommandLine;
 
-namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
+namespace brinux.CommandLineConfigurationProvider
 {
 	public class CommandLineParserConfigurationSource : IConfigurationSource
 	{

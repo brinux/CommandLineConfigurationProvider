@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
+namespace brinux.CommandLineConfigurationProvider
 {
 	public static class CommandLineParserConfigurationTools
 	{

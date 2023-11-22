@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Builder;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
+namespace brinux.CommandLineConfigurationProvider
 {
 	public class CommandLineParserConfigurationProvider : ConfigurationProvider
 	{

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
@@ -6,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
+namespace brinux.CommandLineConfigurationProvider
 {
 	public class CommandLineParserVerbsHandler : IHostedService
 	{

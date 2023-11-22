@@ -1,5 +1,5 @@
 ﻿using CommandLineExample;
-using Microsoft.Extensions.Configuration.CommandLineConfigurationProvider;
+using brinux.CommandLineConfigurationProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

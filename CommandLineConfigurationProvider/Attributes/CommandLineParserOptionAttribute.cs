@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Extensions.Configuration.CommandLineConfigurationProvider
+namespace brinux.CommandLineConfigurationProvider
 {
 	[AttributeUsage(AttributeTargets.Property)]
 	public class CommandLineParserOptionAttribute : Attribute

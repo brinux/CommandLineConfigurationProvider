@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.CommandLineConfigurationProvider;
+﻿using brinux.CommandLineConfigurationProvider;
 using System.ComponentModel.DataAnnotations;
 using Verbs;
 
